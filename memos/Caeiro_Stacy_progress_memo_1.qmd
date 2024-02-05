@@ -25,8 +25,6 @@ citation-location: margin
 
 ## Github Repo Link
 
-To link to your github **repo**sitory, appropriately edit the example link below. Meaning replace `https://your-github-repo-url` with your github repo url. Suggest verifying the link works before submitting.
-
 [Final-Project-GitHub-Link](https://github.com/stat301-2-2024-winter/final-project-2-stacycaeiro.git)
 
 :::
@@ -39,7 +37,8 @@ GitHub (free account) cannot store large files. If you try to commit and push a 
 
 ## Data source
 
-Blah blah blah^[an example of footnote --- [content in margins](https://quarto.org/docs/blog/posts/2022-02-17-advanced-layout/)]
+For my final project I will be using the [Online News Popularity](https://archive.ics.uci.edu/dataset/332/online+news+popularity) 
+from the [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/)
 
 ## Why this data
 
