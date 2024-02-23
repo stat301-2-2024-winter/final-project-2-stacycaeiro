@@ -1,9 +1,24 @@
 library(tidyverse)
+library(naniar)
 
-support <- read_csv("data/support2.csv")
+articles <- read_csv("data/OnlineNewsPopularity.csv")
 
-glimpse(support)
+glimpse(articles)
 
-news_articles <- read_csv("data/OnlineNewsPopularity.csv")
+news_articles |>
+  select(is.numeric)
 
-glimpse(news_articles)
+gg_miss_var(articles)
+
+ggplot(articles, aes(x = shares)) +
+  geom_histogram() + 
+  xlim(0, 75000) + 
+  ylim(0, 17500)
+
+ggplot(articles, aes(x = log(shares))) + 
+  geom_histogram(bins = 30) 
+
+articles |>
+  select(shares) |>
+  summarize(max = max(shares, na.rm = TRUE))
+

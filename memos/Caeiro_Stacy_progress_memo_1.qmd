@@ -29,29 +29,76 @@ citation-location: margin
 
 :::
 
-::: {.callout-warning}
-GitHub (free account) cannot store large files. If you try to commit and push a large dataset you will have an ERROR! Any file over 100 MB (100,000 KB) needs to be added to the `.gitignore` file BEFORE committing.
+```{r}
+#| echo: false
 
-**We may need to do that for files in your final project!**
-:::
+library(tidyverse)
+library(here)
+```
+
+## Prediction Problem 
+
+My prediction problem is to predict the amount of social media shares a news 
+article will receive. The target variable is `shares`, which is a numeric variable,
+so the model will be a regression. I am choosing this problem because increasing 
+social media shares is a common business goal. The results of this model can 
+act as a guide to other publishing sites on how to increase their social media 
+visibility. Additionally, this is a real-world problem I may be faced with when I enter the workforce. 
 
 ## Data source
 
 For my final project I will be using the [Online News Popularity](https://archive.ics.uci.edu/dataset/332/online+news+popularity) 
-from the [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/)
-
-## Why this data
-
-Blah blah blah^[another footnote]
+from the [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/). This
+dataset contains features of Mashable news articles, such as length of title and 
+date of the week published, that were published over a 2 year period. 
 
 ## Data quality & complexity check
 
-Blah blah blah
+There are 39,644 observations and 61 variables. Of these variables, two are non-predictive (`url` and `timedelta`), one is the target variable (`shares`), and the remaining 58 are predictive variables. As of now, all the variables in the dataset are numeric. However, some variables will need to be pivoted and converted into factor variables, such as the `weekday_is_`, `data_channel_is_`, and `is_weekend` variables.
+Furthermore, this dataset contains no missing values. 
+
+
+```{r}
+#| echo: false 
+
+news_articles <- read_csv(here("data/OnlineNewsPopularity.csv"))
+
+news_articles |> 
+  head()
+```
+
 
 ## Potential data issues
 
-Blah blah blah
+Although there are 58 predictor variables, due to computer restraints, I may need 
+to downsize the dataset to only include 15-40 variables. 
 
-## Misc
+## Target Variable Analysis 
 
-Blah Blah
+```{r}
+#| echo: false
+
+ggplot(news_articles, aes(x = shares)) + 
+  geom_histogram() + 
+  labs(title = "Frequency of Shares",
+       x = "Shares",
+       y = "Count")
+```
+
+While not immediately apparent in this histogram, there are
+a few outliers in `shares`, with the max value being 843,300 shares. 
+
+```{r}
+#| echo: false
+
+ggplot(news_articles, aes(x = shares)) +
+  geom_histogram() + 
+  xlim(0, 75000) + 
+  ylim(0, 17500) + 
+  labs(title = "Frequency of Shares",
+       x = "Shares",
+       y = "Count")
+```
+Upon zooming into the histogram, `shares` is right-skewed, as
+fewer amounts of articles receive high amounts of shares. In fact, most articles only recieve around 10,000 or less shares. 
+

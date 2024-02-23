@@ -1,0 +1,49 @@
+---
+title: "Progress Memo 2 - Predicting Social Media Shares"
+subtitle: |
+  | What Indicators Can Predict Social Media Shares of Mashable News Articles?
+author: "Stacy Caeiro"
+date: today
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+    
+execute:
+  echo: false
+  warning: false
+
+from: markdown+emoji 
+reference-location: margin
+citation-location: margin
+---
+
+::: {.callout-tip icon=false}
+
+## Github Repo Link
+
+[Final-Project-GitHub-Link](https://github.com/stat301-2-2024-winter/final-project-2-stacycaeiro.git)
+
+:::
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+library(tidymodels)
+library(here)
+```
+
+## Assessment Metric 
+I will be using root standard mean error (RMSE) as my assessment metric. 
+
+## Analysis Plan 
+- 80-20 data split 
+- vfold cross validation resampling (?)
+- null model and logistic (?) model 
+- 2 recipes
+
+## Model Results 
+
+## Summary of Progress & Next Steps
