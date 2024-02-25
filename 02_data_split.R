@@ -41,6 +41,14 @@ articles_split <- initial_split(articles,
 articles_train <- training(articles_split)
 articles_test <- testing(articles_split)
 
-# save split ----
+# fold data ----
+articles_fold <- vfold_cv(articles_train,
+                          v = 10, 
+                          repeats = 5, 
+                          strata = shares_log)
+
+# save ----
 save(articles_train, articles_test,
      file = "results/articles_split.rda")
+save(articles_fold, file = "results/articles_fold.rda")
+

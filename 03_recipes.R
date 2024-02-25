@@ -25,4 +25,6 @@ null_recipe <- recipe(shares_log ~., data = articles_train)|>
 
 #prep(null_recipe) |>
 #  bake(new_data = NULL)
-  
+
+# save ----
+save(null_recipe, file = "results/null_recipe.rda")
