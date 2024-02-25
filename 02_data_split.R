@@ -12,6 +12,11 @@ tidymodels_prefer()
 # set seed ----
 set.seed(3012)
 
+# parallel processing ----
+num_cores <- parallel::detectCores(logical = TRUE)
+
+doMC::registerDoMC(cores = num_cores)
+
 # load and clean data ----
 articles <- read_csv("data/OnlineNewsPopularity.csv") |>
   mutate(
@@ -43,8 +48,8 @@ articles_test <- testing(articles_split)
 
 # fold data ----
 articles_fold <- vfold_cv(articles_train,
-                          v = 10, 
-                          repeats = 5, 
+                          v = 5, 
+                          repeats = 3, 
                           strata = shares_log)
 
 # save ----

@@ -39,4 +39,9 @@
 # to automatically find and add files over 100MB to the .gitignore you can type 
 # the following code in the Terminal:
 # find . -size +100M | sed 's|^\./||g' | cat >> .gitignore; awk '!NF || !seen[$0]++' .gitignore
-results/articles_fold.rda
+results/articles_fold.rda 
+results/null_results.rda
+01_data_exploration.R
+03_recipes.R
+04_null_model.R
+06_model_analysis.R
