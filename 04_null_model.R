@@ -30,3 +30,13 @@ null_spec <- null_model() %>%
 null_workflow <- workflow() %>% 
   add_model(null_spec) %>% 
   add_recipe(null_recipe)
+
+null_fit <- null_workflow |> 
+  fit_resamples(
+    resamples = articles_fold, 
+    control = control_resamples(save_workflow = TRUE)
+  )
+
+save(null_fit, file = "results/null_fit.rda")
+
+
