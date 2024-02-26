@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Stacy Caeiro">
-<meta name="dcterms.date" content="2024-02-25">
+<meta name="dcterms.date" content="2024-02-26">
 
 <title>Progress Memo 2 - Predicting Social Media Shares</title>
 <style>
@@ -3063,7 +3063,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 25, 2024</p>
+      <p class="date">February 26, 2024</p>
     </div>
   </div>
   
@@ -3098,7 +3098,9 @@ Github Repo Link
 </section>
 <section id="analysis-plan" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-plan">Analysis Plan</h2>
-<p>To begin, I will split my data using stratified sampling such that 80% of the data is used for training and 20% is used for testing. Furthermore, I will use v-fold cross-validation resampling with 5 folds and 3 repeats. Additionally, I will be using a null model and a linear model. Finally, I will be using 2 recipes.</p>
+<p>To begin, I will split my data using stratified sampling such that 80% of the data is used for training and 20% is used for testing. Furthermore, I will use v-fold cross-validation resampling with 5 folds and 3 repeats.</p>
+<p>For my project, I will use 6 models: null, linear, lasso, random forest, k-nearest neighbors, and boosted tree.</p>
+<p>Additionally, I will use 3 recipes: a basic kitchen sink recipe for the null and linear models, a feature engineering recipe for the lasso and k-nearest neighbors models, and a feature engineering recipe for the tree models (random forest and boosted tree).</p>
 </section>
 <section id="model-results" class="level2">
 <h2 class="anchored" data-anchor-id="model-results">Model Results</h2>
@@ -3148,11 +3150,11 @@ Github Repo Link
 </table>
 </div>
 </div>
-<p>As seen here, the mean RMSE for the null model is <code>0.928</code> and the mean RMSE for the linear model is <code>1.11</code>.</p>
+<p>As seen here, the mean RMSE for the null model is <code>0.928</code> and the mean RMSE for the linear model is <code>1.11</code>. By these metrics, the null model performed better than the linear model.</p>
 </section>
 <section id="summary-of-progress-next-steps" class="level2">
 <h2 class="anchored" data-anchor-id="summary-of-progress-next-steps">Summary of Progress &amp; Next Steps</h2>
-<p>So far, I have cleaned and split my data, created two recipes, and fit a null model and a linear model. My next steps are to decide if I should pursue more complex modelling, and if so, what model type to choose, what hyperparameters to tune, and what recipe steps to modify.</p>
+<p>So far, I have cleaned and split my data, created one basic kitchen sink recipe, and fit a null model and a linear model. My next steps are to conduct an EDA to determine what feature engineering steps to add to my recipes &amp; what hyperparameters to tune. Then, I will need to create the final 2 recipes, fit the final 4 models, and collect metrics.</p>
 </section>
 
 </main>
