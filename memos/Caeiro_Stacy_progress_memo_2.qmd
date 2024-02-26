@@ -46,8 +46,9 @@ I will be using root standard mean error (RMSE) as my assessment metric.
 ## Analysis Plan 
 To begin, I will split my data using stratified sampling such that 80% of the data is used for training and 20% is used for testing. Furthermore, I will use v-fold cross-validation resampling with 5 folds and 3 repeats. 
 
-For my project, I will use 6 models: null, linear, random forest, k nearest neighbors, 
-Additionally, I will be using a null model and a linear model. Finally, I will be using 2 recipes. 
+For my project, I will use 6 models: null, linear, lasso, random forest, k-nearest neighbors, and boosted tree. 
+
+Additionally, I will use 3 recipes: a basic kitchen sink recipe for the null and linear models, a feature engineering recipe for the lasso and k-nearest neighbors models, and a feature engineering recipe for the tree models (random forest and boosted tree). 
 
 
 ## Model Results 
@@ -56,7 +57,7 @@ Additionally, I will be using a null model and a linear model. Finally, I will b
 bind_rows(null_results, lm_results) |>
   knitr::kable()
 ```
-As seen here, the mean RMSE for the null model is `0.928` and the mean RMSE for the linear model is `1.11`. 
+As seen here, the mean RMSE for the null model is `0.928` and the mean RMSE for the linear model is `1.11`. By these metrics, the null model performed better than the linear model. 
 
 ## Summary of Progress & Next Steps
-So far, I have cleaned and split my data, created two recipes, and fit a null model and a linear model. My next steps are to decide if I should pursue more complex modelling, and if so, what model type to choose, what hyperparameters to tune, and what recipe steps to modify. 
+So far, I have cleaned and split my data, created one basic kitchen sink recipe, and fit a null model and a linear model. My next steps are to conduct an EDA to determine what feature engineering steps to add to my recipes & what hyperparameters to tune. Then, I will need to create the final 2 recipes, fit the final 4 models, and collect metrics. 
