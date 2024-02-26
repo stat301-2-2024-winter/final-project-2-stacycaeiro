@@ -29,21 +29,34 @@ citation-location: margin
 
 ```{r}
 #| echo: false
-
 library(tidyverse)
 library(tidymodels)
 library(here)
+
+load(here("results/null_results.rda"))
+load(here("results/lm_results.rda"))
 ```
+
+## Project Overview 
+My final project is to predict the number of social media shares a Mashable news article will receive. Thus, I will be computing regression models to model the outcome of the numeric variable `shares`. Additionally, I will be using the [Online News Popularity](https://archive.ics.uci.edu/dataset/332/online+news+popularity) from the [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/).
 
 ## Assessment Metric 
 I will be using root standard mean error (RMSE) as my assessment metric. 
 
 ## Analysis Plan 
-- 80-20 data split 
-- vfold cross validation resampling (?)
-- null model and logistic (?) model 
-- 2 recipes
+To begin, I will split my data using stratified sampling such that 80% of the data is used for training and 20% is used for testing. Furthermore, I will use v-fold cross-validation resampling with 5 folds and 3 repeats. 
+
+For my project, I will use 6 models: null, linear, random forest, k nearest neighbors, 
+Additionally, I will be using a null model and a linear model. Finally, I will be using 2 recipes. 
+
 
 ## Model Results 
+```{r}
+#| echo: false
+bind_rows(null_results, lm_results) |>
+  knitr::kable()
+```
+As seen here, the mean RMSE for the null model is `0.928` and the mean RMSE for the linear model is `1.11`. 
 
 ## Summary of Progress & Next Steps
+So far, I have cleaned and split my data, created two recipes, and fit a null model and a linear model. My next steps are to decide if I should pursue more complex modelling, and if so, what model type to choose, what hyperparameters to tune, and what recipe steps to modify. 

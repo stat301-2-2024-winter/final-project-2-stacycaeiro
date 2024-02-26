@@ -15,7 +15,7 @@ set.seed(3012)
 # load files ----
 load(here("results/articles_split.rda"))
 load(here("results/articles_fold.rda"))
-load(here("results/null_recipe.rda"))
+load(here("results/basic_recipe.rda"))
 
 # parallel processing ----
 num_cores <- parallel::detectCores(logical = TRUE)
@@ -29,7 +29,7 @@ null_spec <- null_model() %>%
 
 null_workflow <- workflow() %>% 
   add_model(null_spec) %>% 
-  add_recipe(null_recipe)
+  add_recipe(basic_recipe)
 
 null_fit <- null_workflow |> 
   fit_resamples(

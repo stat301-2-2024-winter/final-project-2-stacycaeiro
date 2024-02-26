@@ -17,6 +17,7 @@ load(here("results/articles_split.rda"))
 load(here("results/articles_fold.rda"))
 load(here("results/null_recipe.rda"))
 load(here("results/null_fit.rda"))
+load(here('results/lm_fit.rda'))
 
 # parallel processing ----
 num_cores <- parallel::detectCores(logical = TRUE)
@@ -26,7 +27,16 @@ doMC::registerDoMC(cores = num_cores)
 # null fit model analysis ----
 null_results <- null_fit |>
   collect_metrics() |>
-  filter(.metric == "rmse")
+  filter(.metric == "rmse") |>
+  mutate(model = "Null")
 
 save(null_results, file = "results/null_results.rda")
+
+# linear fit model analysis ----
+lm_results <- lm_fit |>
+  collect_metrics() |>
+  filter(.metric == "rmse") |>
+  mutate(model = "Linear")
+
+save(lm_results, file = "results/lm_results.rda")
   

@@ -15,17 +15,17 @@ set.seed(3012)
 # load files ----
 load(here("results/articles_split.rda"))
 
-# Null Model ----
-null_recipe <- recipe(shares_log ~., data = articles_train)|>
+# Null & Linear Model Recipe ----
+basic_recipe <- recipe(shares_log ~., data = articles_train)|>
   step_rm(url, timedelta) |>
   step_nzv(all_predictors()) |>
   step_dummy(all_nominal_predictors()) |>
   step_impute_linear(all_numeric_predictors()) |>
   step_normalize(all_numeric_predictors())
 
-prep(null_recipe) |>
+prep(basic_recipe) |>
   bake(new_data = NULL) |>
-  view()
+  glimpse()
 
 # save ----
-save(null_recipe, file = "results/null_recipe.rda")
+save(basic_recipe, file = "results/basic_recipe.rda")
