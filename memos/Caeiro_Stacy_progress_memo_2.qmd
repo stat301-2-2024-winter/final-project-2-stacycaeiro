@@ -60,4 +60,4 @@ bind_rows(null_results, lm_results) |>
 As seen here, the mean RMSE for the null model is `0.928` and the mean RMSE for the linear model is `1.11`. By these metrics, the null model performed better than the linear model. 
 
 ## Summary of Progress & Next Steps
-So far, I have cleaned and split my data, created one basic kitchen sink recipe, and fit a null model and a linear model. My next steps are to conduct an EDA to determine what feature engineering steps to add to my recipes & what hyperparameters to tune. Then, I will need to create the final 2 recipes, fit the final 4 models, and collect metrics. 
+So far, I have cleaned and split my data, created one basic kitchen sink recipe, and fit a null model and a linear model. My next steps are to conduct an EDA to determine what feature engineering steps to add to my recipes & what hyperparameters to tune. Then, I will need to create the final 2 recipes, fit the final 4 models, and collect metrics.

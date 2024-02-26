@@ -1,5 +1,5 @@
 # STAT 301-2 Final Project: Predicting Social Media Shares ----
-# Creating recipes
+# Basic Recipe
 
 # load packages ----
 library(tidyverse)
