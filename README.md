@@ -4,7 +4,7 @@ Final project for STAT 301-2 at Northwestern University. My project is to predic
 
 ## What's in this Repo?
 
-### R Scripts 
+### R_Scripts/ 
 `01_data_exploration.R`: initial EDA 
 `02_data_split.R`: clean, fold, and split dataset 
 `03_basic_recipe.R`: basic kitchen sink recipe 
