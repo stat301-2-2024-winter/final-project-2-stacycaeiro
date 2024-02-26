@@ -41,7 +41,7 @@ load(here("results/lm_results.rda"))
 My final project is to predict the number of social media shares a Mashable news article will receive. Thus, I will be computing regression models to model the outcome of the numeric variable `shares`. Additionally, I will be using the [Online News Popularity](https://archive.ics.uci.edu/dataset/332/online+news+popularity) from the [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/).
 
 ## Assessment Metric 
-I will be using root standard mean error (RMSE) as my assessment metric. 
+I will be using root mean standard error (RMSE) as my assessment metric. 
 
 ## Analysis Plan 
 To begin, I will split my data using stratified sampling such that 80% of the data is used for training and 20% is used for testing. Furthermore, I will use v-fold cross-validation resampling with 5 folds and 3 repeats. 
