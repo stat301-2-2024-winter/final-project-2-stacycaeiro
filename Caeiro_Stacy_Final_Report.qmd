@@ -1,0 +1,61 @@
+---
+title: "STAT 301-2 Final Report"
+subtitle: |
+  | What Indicators Can Predict Social Media Shares of Mashable News Articles?
+author: "Stacy Caeiro"
+date: today
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+    
+execute:
+  echo: false
+  warning: false
+
+from: markdown+emoji 
+reference-location: margin
+citation-location: margin
+---
+
+## Introduction 
+-My prediction problem is to predict the amount of social media shares a news article will receive. 
+-I am choosing this problem because increasing social media shares is a common business goal. The results of this model can act as a guide to other publishing sites on how to increase their social media visibility.
+-I will be using the [Online News Popularity](https://archive.ics.uci.edu/dataset/332/online+news+popularity) from the [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/). This
+dataset contains features of Mashable news articles, such as length of title and date of the week published, that were published over a 2 year period. 
+
+## Data Overview 
+![shares-hist](img/shares_hist.png)
+-The target variable is right-skewed, meaning that most news articles receive 1-10,000 shares, and very few articles receive more than 20,000 shares. 
+-Furthermore, there are no missing values with any of the variables in the dataset. 
+-[insert summary of EDA]
+## Methods 
+-80-20 data split with stratified sampling (reason: large enough dataset that 20% for testing provides sufficient # of observations while also avoiding overfitting)
+-Regression analysis 
+-baseline null, linear, elastic net, random forest, k-nearest neighbors, and boosted tree
+-[insert parameters to tune]
+-2 baseline recipes, 2 feature engineered recipes 
+-v-fold cross validation with 5 folds and 3 repeats (reason: computer limitations)
+-RMSE as final metric 
+
+## Model Building and Selection
+-RMSE will be final metric
+[table of best performing model results]
+[review and analyze tuning parameters]
+[should further tuning be explored? how should tuning be adjusted in future?]
+[describe best parameters for each model type]
+[Select final model and explain why. Surprising?]
+
+## Final Model Analysis 
+[asses final model with RMSE but advisable to use other metrics too]
+[graph of predictions vs true values]
+[conduct analysis on original scale]
+[how much better is the final model over the baseline?]
+[are there features of the model that make it the best?]
+
+## Conclusion 
+
+## References 
+
+## Appendix: EDA 
