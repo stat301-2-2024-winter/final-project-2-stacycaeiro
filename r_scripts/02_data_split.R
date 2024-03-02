@@ -53,7 +53,8 @@ articles_fold <- vfold_cv(articles_train,
                           strata = shares_log)
 
 # save ----
-save(articles_train, articles_test,
-     file = "results/articles_split.rda")
-save(articles_fold, file = "results/articles_fold.rda")
+save(articles_split, file = "data_splits/articles_split.rda")
+save(articles_train, file = "data_splits/articles_train.rda")
+save(articles_test, file = "data_splits/articles_test.rda")
+save(articles_fold, file = "data_splits/articles_fold.rda")
 
