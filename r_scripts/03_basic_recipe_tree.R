@@ -14,3 +14,13 @@ set.seed(3012)
 
 # load files ----
 load(here("results/articles_split.rda"))
+
+# recipe ----
+basic_recipe_tree <- recipe(shares_log ~., 
+                            data = articles_train) |>
+  step_rm(url, timedelta) |>
+  step_zv(all_predictors()) |>
+  step_dummy(all_nominal_predictors(), one_hot = TRUE) |>
+  step_normalize(all_numeric_predictors())
+
+save(basic_recipe_tree, file = "recipes/basic_recipe_tree.rda")
