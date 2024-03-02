@@ -15,7 +15,7 @@ set.seed(3012)
 # load files ----
 load(here("results/articles_split.rda"))
 
-# Null & Linear Model Recipe ----
+# Kitchen Sink Recipe ----
 basic_recipe <- recipe(shares_log ~., data = articles_train)|>
   step_rm(url, timedelta) |>
   step_nzv(all_predictors()) |>
