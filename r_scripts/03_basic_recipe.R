@@ -20,7 +20,6 @@ basic_recipe <- recipe(shares_log ~., data = articles_train)|>
   step_rm(url, timedelta) |>
   step_nzv(all_predictors()) |>
   step_dummy(all_nominal_predictors()) |>
-  step_impute_linear(all_numeric_predictors()) |>
   step_normalize(all_numeric_predictors())
 
 prep(basic_recipe) |>
@@ -28,4 +27,4 @@ prep(basic_recipe) |>
   glimpse()
 
 # save ----
-save(basic_recipe, file = "results/basic_recipe.rda")
+save(basic_recipe, file = "recipes/basic_recipe.rda")
