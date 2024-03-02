@@ -23,4 +23,8 @@ basic_recipe_tree <- recipe(shares_log ~.,
   step_dummy(all_nominal_predictors(), one_hot = TRUE) |>
   step_normalize(all_numeric_predictors())
 
+prep(basic_recipe_tree) |>
+  bake(new_data = NULL) |>
+  glimpse()
+
 save(basic_recipe_tree, file = "recipes/basic_recipe_tree.rda")
