@@ -31,3 +31,5 @@ articles |>
   summarize(max = max(shares, na.rm = TRUE),
             min = min(shares, na.rm = TRUE))
 
+# exploratory data analysis ----
+
