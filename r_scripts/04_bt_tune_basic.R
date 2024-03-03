@@ -34,13 +34,14 @@ bt_params <- extract_parameter_set_dials(bt_spec) |>
 bt_grid <- grid_regular(bt_params, levels = 5)
 
 # workflow ----
-bt_workflow <- workflow() |>
+bt_workflow_basic <- workflow() |>
   add_model(bt_spec) |>
   add_recipe(basic_recipe_tree)
 
 # tune ----
-tuned_bt <- tune_grid(bt_workflow, 
+tuned_bt_basic <- tune_grid(bt_workflow_basic, 
                       articles_fold,
-                      grid = bt_grid)
+                      grid = bt_grid,
+                      control = control_grid(save_workflow = TRUE))
 
-save(tuned_bt, file = "results/tuned_bt_basic.rda")
+save(tuned_bt_basic, file = here("results/tuned_bt_basic.rda"))
