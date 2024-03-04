@@ -36,4 +36,4 @@ lm_fit <- lm_workflow |>
     control = control_resamples(save_workflow = TRUE)
   )
 
-save(lm_fit, file = "results/lm_fit.rda")
+save(lm_fit, file = here("results/lm_fit_basic.rda"))

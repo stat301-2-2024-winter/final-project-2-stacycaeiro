@@ -36,6 +36,6 @@ null_fit <- null_workflow |>
     control = control_resamples(save_workflow = TRUE)
   )
 
-save(null_fit, file = "results/null_fit.rda")
+save(null_fit, file = here("results/null_fit_basic.rda"))
 
 
