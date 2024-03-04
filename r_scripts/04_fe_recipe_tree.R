@@ -1,5 +1,5 @@
 # STAT 301-2 Final Project: Predicting Social Media Shares ----
-# Tree Recipe
+# Feature engineering recipe for tree models 
 
 # load packages ----
 library(tidyverse)
@@ -13,18 +13,19 @@ tidymodels_prefer()
 set.seed(3012)
 
 # load files ----
-load(here("results/articles_split.rda"))
+load(here("data_splits/articles_train.rda"))
 
 # recipe ----
-basic_recipe_tree <- recipe(shares_log ~., 
+fe_recipe_tree <- recipe(shares_log ~., 
                             data = articles_train) |>
   step_rm(url, timedelta) |>
   step_zv(all_predictors()) |>
   step_dummy(all_nominal_predictors(), one_hot = TRUE) |>
-  step_normalize(all_numeric_predictors())
+  step_normalize(all_numeric_predictors()) |>
+  step_ns(deg_free = 5)
 
-prep(basic_recipe_tree) |>
+prep(fe_recipe_tree) |>
   bake(new_data = NULL) |>
   glimpse()
 
-save(basic_recipe_tree, file = "recipes/basic_recipe_tree.rda")
+save(fe_recipe_tree, file = "recipes/fe_recipe_tree.rda")
