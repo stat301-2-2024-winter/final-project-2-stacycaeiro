@@ -18,7 +18,7 @@ load(here("data_splits/articles_train.rda"))
 # recipe ----
 basic_recipe_tree <- recipe(shares_log ~., 
                             data = articles_train) |>
-  step_rm(url, timedelta) |>
+  step_rm(url, timedelta, shares) |>
   step_zv(all_predictors()) |>
   step_dummy(all_nominal_predictors(), one_hot = TRUE) |>
   step_normalize(all_numeric_predictors())

@@ -17,7 +17,7 @@ load(here("data_splits/articles_train.rda"))
 
 # Kitchen Sink Recipe ----
 basic_recipe <- recipe(shares_log ~., data = articles_train)|>
-  step_rm(url, timedelta) |>
+  step_rm(url, timedelta, shares) |>
   step_nzv(all_predictors()) |>
   step_dummy(all_nominal_predictors()) |>
   step_normalize(all_numeric_predictors())
