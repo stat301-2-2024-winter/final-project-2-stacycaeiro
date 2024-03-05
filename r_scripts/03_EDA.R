@@ -115,4 +115,21 @@ ggplot(subset_articles, aes(x = n_tokens_title, y = n_non_stop_words)) +
   geom_point() +
   geom_abline()
 
+# second corr plot ----
+articles_corr_2 <- subset_articles |>
+  select(n_tokens_title, n_tokens_content, n_non_stop_words, num_hrefs, num_imgs,
+         num_videos, rate_positive_words, rate_negative_words, avg_positive_polarity,
+         avg_negative_polarity, title_subjectivity, title_sentiment_polarity) |>
+  cor()
 
+ggcorrplot::ggcorrplot(articles_corr_2)
+
+ggplot(subset_articles, aes(x = num_hrefs, y = n_tokens_content)) +
+  geom_point() + 
+  geom_abline()
+
+ggplot(subset_articles, aes(x = num_hrefs, y = num_imgs)) +
+  geom_point() + 
+  geom_abline()
+
+  

@@ -13,8 +13,8 @@ tidymodels_prefer()
 set.seed(3012)
 
 # load files ----
-load(here("results/null_fit.rda"))
-load(here("results/lm_fit.rda"))
+load(here("results/null_fit_basic.rda"))
+load(here("results/lm_fit_basic.rda"))
 load(here("results/tuned_rf_basic.rda"))
 load(here("results/tuned_bt_basic.rda"))
 load(here("results/tuned_knn_basic.rda"))
@@ -31,29 +31,6 @@ num_cores <- parallel::detectCores(logical = TRUE)
 
 doMC::registerDoMC(cores = num_cores)
 
-# null fit model analysis ----
-null_results <- null_fit |>
-  collect_metrics() |>
-  filter(.metric == "rmse") |>
-  mutate(model = "Null")
-
-save(null_results, file = "results/null_results.rda")
-
-# linear fit model analysis ----
-lm_results <- lm_fit |>
-  collect_metrics() |>
-  filter(.metric == "rmse") |>
-  mutate(model = "Linear")
-
-save(lm_results, file = "results/lm_results.rda")
-
-# en analysis ----
-en_results <- tuned_en_basic |>
-  collect_metrics() |>
-  filter(.metric == "rmse") |>
-  mutate(model = "ElasticNet")
-
-en_results
 
 # kitchen sink model analysis ----
 basic_model_results <- as_workflow_set(
