@@ -30,23 +30,31 @@ subset_articles <- articles_train[subset_indices, ]
 # EDA ----
 
 ## explore skew 
+ggplot(subset_articles, aes(x = n_tokens_content)) +
+  geom_histogram()
+
 ggplot(subset_articles, aes(x = log(n_tokens_content))) +
   geom_histogram()
 
+ggplot(subset_articles, aes(x = num_hrefs)) +
+  geom_histogram()
+
 ggplot(subset_articles, aes(x = log(num_hrefs))) +
+  geom_histogram() 
+
+# yeo-johnson ----
+ggplot(subset_articles, aes(x = kw_avg_min)) +
+  geom_histogram() 
+
+ggplot(subset_articles, aes(x = log(kw_avg_min))) +
   geom_histogram()
 
-ggplot(subset_articles, aes(x = log(num_self_hrefs))) +
+ggplot(subset_articles, aes(x = self_reference_min_shares)) +
+  geom_histogram() 
+
+ggplot(subset_articles, aes(x = log(self_reference_min_shares))) +
   geom_histogram()
 
-ggplot(subset_articles, aes(x = num_imgs)) +
-  geom_histogram()
-
-ggplot(subset_articles, aes(x = num_videos)) +
-  geom_histogram()
-
-ggplot(subset_articles, aes(x = log(rate_positive_words))) +
-  geom_histogram()
 
 #yeojohnson()
 #transformations for neg numbers

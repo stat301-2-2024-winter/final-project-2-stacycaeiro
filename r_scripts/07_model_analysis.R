@@ -75,4 +75,27 @@ fe_model_results_tibble <- fe_model_results |>
 
 fe_model_results_tibble  
 
+# test  ----
+lm_fe_metrics <- lm_fit_fe |> 
+  collect_metrics() |> 
+  mutate(model = "lm") |> 
+  # we are going to choose roc_auc as our metric
+  filter(.metric == "rmse")
+
+lm_fe_metrics
+
+null_fe_metrics <- null_fit_fe |> 
+  collect_metrics() |> 
+  mutate(model = "lm") |> 
+  # we are going to choose roc_auc as our metric
+  filter(.metric == "rmse")
+
+null_fe_metrics
+
+penguins_metrics |> 
+  select(model, mean, std_err) |> 
+  kbl() |> 
+  kable_styling()
+
+
 

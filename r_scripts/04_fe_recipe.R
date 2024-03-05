@@ -22,7 +22,9 @@ fe_recipe <- recipe(shares_log ~., data = articles_train)|>
   step_dummy(all_nominal_predictors()) |>
   step_interact(~ num_hrefs:n_tokens_content) |>
   step_interact(~ num_hrefs:num_imgs) |>
-  step_YeoJohnson(all_numeric_predictors()) |>
+  step_YeoJohnson(n_tokens_content, num_hrefs, kw_avg_avg,
+                  self_reference_avg_sharess, kw_avg_min,
+                  self_reference_min_shares) |>
   step_ns(title_sentiment_polarity, global_sentiment_polarity,
           deg_free = 5) |>
   step_normalize(all_numeric_predictors()) |>
