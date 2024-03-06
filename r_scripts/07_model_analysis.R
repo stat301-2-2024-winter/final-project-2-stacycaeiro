@@ -25,6 +25,7 @@ load(here("results/null_fit_fe.rda"))
 load(here("results/tuned_bt_fe.rda"))
 load(here("results/tuned_en_fe.rda"))
 load(here("results/tuned_knn_fe.rda"))
+load(here("results/tuned_rf_fe.rda"))
 
 # parallel processing ----
 num_cores <- parallel::detectCores(logical = TRUE)
@@ -62,7 +63,8 @@ fe_model_results <- as_workflow_set(
   linear = lm_fit_fe,
   elastic_net = tuned_en_fe,
   k_nearest_neighbors = tuned_knn_fe,
-  boosted_tree = tuned_bt_fe
+  boosted_tree = tuned_bt_fe,
+  random_forest = tuned_rf_fe
 )
 
 fe_model_results_tibble <- fe_model_results |>
