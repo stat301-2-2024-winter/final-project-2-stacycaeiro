@@ -23,8 +23,7 @@ citation-location: margin
 library(tidyverse)
 library(tidymodels)
 library(here)
-load("results/basic_results.rda")
-load("results/fe_results.rda")
+load(here("results/rmse_tibble.rda"))
 ```
 
 ## Introduction 
@@ -54,8 +53,7 @@ dataset contains features of Mashable news articles, such as length of title and
 ```{r}
 #| echo: false 
 
-bind_rows(basic_model_results_tibble, fe_model_results_tibble) |>
-  arrange(RMSE) |>
+rmse_tibble |>
   knitr::kable()
 ```
 
