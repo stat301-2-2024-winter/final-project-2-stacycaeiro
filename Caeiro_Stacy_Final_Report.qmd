@@ -23,7 +23,9 @@ citation-location: margin
 library(tidyverse)
 library(tidymodels)
 library(here)
+library(knitr)
 load(here("results/rmse_tibble.rda"))
+load(here("results/rf_final_metrics.rda"))
 ```
 
 ## Introduction 
@@ -57,15 +59,54 @@ rmse_tibble |>
   knitr::kable()
 ```
 
-[review and analyze tuning parameters]
-[should further tuning be explored? how should tuning be adjusted in future?]
-[describe best parameters for each model type]
-[Select final model and explain why. Surprising?]
+-due to the relatively low RMSE values, further tuning does not need to be explored
+for these models 
+-In the future, I would set `mtry` to square root of predictors instead of 50-70%
+of predictors to limit computational time. 
+-For the basic recipe models, the best parameters were: 
+ - random forest: `mtry` = 9, `min_n` = 11
+ - boosted tree: `mtry` = 37, `min_n` = 30, `learn_rate` = 0.316
+ - elastic net: `penalty` = 1.0, `mixture` = 0.05
+ - k-nearest neighbors: `neighbors` = 15
+-For the feature engineering recipe models, the best parameters were: 
+ - random forest: `mtry` = 9, `min_n` = 2
+ - boosted tree: `mtry` = 25, `min_n` = 40, `learn_rate` = 0.316
+ - elastic net: `penalty` = 0.00316, `mixture` = 0.7625
+ - k-nearest neighbors: `neighbors` = 15
+-The best performing model was the random forest model with the basic recipe with 
+hyperparameters `mtry` = 9 and `min_n` = 2. This is not surprising because in 
+our past labs, random forest tends to be the best performing model. However, I 
+was surprised that the basic recipe performed better than the feature engineering 
+recipe. 
 
 ## Final Model Analysis 
-[asses final model with RMSE but advisable to use other metrics too]
-[graph of predictions vs true values]
-[conduct analysis on original scale]
+```{r}
+#| echo: false 
+rf_final_metrics |>
+  kable()
+```
+```{r}
+#| echo: false 
+
+within_10_pct |>
+  kable()
+  
+```
+
+
+![pred-vs-shares-log](img/pred_vs_shares_log.png)
+```{r}
+#| echo: false 
+
+kable(rf_final_metrics_scaled)
+```
+```{r}
+#| echo: false
+kable(within_10_pct_scaled)
+```
+
+![pred_vs_shares_scaled](img/pred_vs_shares_scaled.png)
+
 [how much better is the final model over the baseline?]
 [are there features of the model that make it the best?]
 
