@@ -35,12 +35,12 @@ doMC::registerDoMC(cores = num_cores)
 
 # kitchen sink model analysis ----
 basic_model_results <- as_workflow_set(
-  baseline_null = null_fit, 
-  linear = lm_fit,
-  elastic_net = tuned_en_basic,
-  random_forest = tuned_rf_basic,
-  k_nearest_neighbors = tuned_knn_basic,
-  boosted_tree = tuned_bt_basic
+  basic_null = null_fit, 
+  basic_linear = lm_fit,
+  basic_elastic_net = tuned_en_basic,
+  basic_random_forest = tuned_rf_basic,
+  basic_k_nearest_neighbors = tuned_knn_basic,
+  basic_boosted_tree = tuned_bt_basic
 )
 
 basic_model_results 
@@ -59,7 +59,7 @@ save(basic_model_results_tibble, file = here("results/basic_results.rda"))
 
 # feature engineering model analysis ----
 fe_model_results <- as_workflow_set(
-  baseline_null = null_fit_fe, 
+  null = null_fit_fe, 
   linear = lm_fit_fe,
   elastic_net = tuned_en_fe,
   k_nearest_neighbors = tuned_knn_fe,
@@ -75,29 +75,13 @@ fe_model_results_tibble <- fe_model_results |>
   select(`Model Type` = wflow_id,
          `RMSE` = mean)
 
-fe_model_results_tibble  
+fe_model_results_tibble
 
-# test  ----
-lm_fe_metrics <- lm_fit_fe |> 
-  collect_metrics() |> 
-  mutate(model = "lm") |> 
-  # we are going to choose roc_auc as our metric
-  filter(.metric == "rmse")
+save(fe_model_results_tibble, file = "results/fe_results.rda")
 
-lm_fe_metrics
+# best model ----
+show_best(tuned_rf_basic, metric = "rmse")
 
-null_fe_metrics <- null_fit_fe |> 
-  collect_metrics() |> 
-  mutate(model = "lm") |> 
-  # we are going to choose roc_auc as our metric
-  filter(.metric == "rmse")
-
-null_fe_metrics
-
-penguins_metrics |> 
-  select(model, mean, std_err) |> 
-  kbl() |> 
-  kable_styling()
 
 
 

@@ -18,6 +18,14 @@ from: markdown+emoji
 reference-location: margin
 citation-location: margin
 ---
+```{r}
+#| echo: false 
+library(tidyverse)
+library(tidymodels)
+library(here)
+load("results/basic_results.rda")
+load("results/fe_results.rda")
+```
 
 ## Introduction 
 -My prediction problem is to predict the amount of social media shares a news article will receive. 
@@ -30,18 +38,27 @@ dataset contains features of Mashable news articles, such as length of title and
 -The target variable is right-skewed, meaning that most news articles receive 1-10,000 shares, and very few articles receive more than 20,000 shares. 
 -Furthermore, there are no missing values with any of the variables in the dataset. 
 -[insert summary of EDA]
+
 ## Methods 
 -80-20 data split with stratified sampling (reason: large enough dataset that 20% for testing provides sufficient # of observations while also avoiding overfitting)
 -Regression analysis 
 -baseline null, linear, elastic net, random forest, k-nearest neighbors, and boosted tree
--[insert parameters to tune]
+-knn: tuned neighbors, en: tuned penalty and mixture, bt: tuned min n, mtry (1,50), and learn rate, rf: tuned mtry (1,36), min n
 -2 baseline recipes, 2 feature engineered recipes 
 -v-fold cross validation with 5 folds and 3 repeats (reason: computer limitations)
+-regular grid with 5 levels 
 -RMSE as final metric 
 
 ## Model Building and Selection
 -RMSE will be final metric
-[table of best performing model results]
+```{r}
+#| echo: false 
+
+bind_rows(basic_model_results_tibble, fe_model_results_tibble) |>
+  arrange(RMSE) |>
+  knitr::kable()
+```
+
 [review and analyze tuning parameters]
 [should further tuning be explored? how should tuning be adjusted in future?]
 [describe best parameters for each model type]
