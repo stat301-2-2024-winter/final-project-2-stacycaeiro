@@ -31,6 +31,16 @@ load(here("results/tuned_rf_fe.rda"))
 num_cores <- parallel::detectCores(logical = TRUE)
 doMC::registerDoMC(cores = num_cores)
 
-# kitchen sink model analysis ----
-show_best(tuned_bt_basic, metric = "rmse") |>
-  slice_sample(n = 1)
+# best rmse per model ----
+bt_basic_rmse <- show_best(tuned_bt_basic, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "Boosted Tree (Basic)")
+
+null_basic_rmse <- show_best(null_fit, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "Null (Basic)")
+
+lm_basic_rmse <- show_best(lm_, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "Null (Basic)")
+

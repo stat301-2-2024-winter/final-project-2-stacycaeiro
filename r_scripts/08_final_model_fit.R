@@ -1,5 +1,5 @@
 # STAT 301-2 Final Project: Predicting Social Media Shares ----
-# Best model analysis - random forest model with basic recipe 
+# Best model fit - random forest model with basic recipe 
 
 # load packages ----
 library(tidyverse)
