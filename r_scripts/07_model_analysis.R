@@ -29,59 +29,74 @@ load(here("results/tuned_rf_fe.rda"))
 
 # parallel processing ----
 num_cores <- parallel::detectCores(logical = TRUE)
-
 doMC::registerDoMC(cores = num_cores)
 
+# best rmse per model ----
+bt_basic_rmse <- show_best(tuned_bt_basic, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "Boosted Tree (Basic)")
 
-# kitchen sink model analysis ----
-basic_model_results <- as_workflow_set(
-  basic_null = null_fit, 
-  basic_linear = lm_fit,
-  basic_elastic_net = tuned_en_basic,
-  basic_random_forest = tuned_rf_basic,
-  basic_k_nearest_neighbors = tuned_knn_basic,
-  basic_boosted_tree = tuned_bt_basic
-)
+null_basic_rmse <- show_best(null_fit, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "Null (Basic)")
 
-basic_model_results 
+lm_basic_rmse <- show_best(lm_fit, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "Linear (Basic)")
 
-basic_model_results_tibble <- basic_model_results |>
-  collect_metrics() |>
-  filter(.metric == "rmse") |>
-  slice_min(mean, by = wflow_id) |>
-  arrange(mean) |>
-  select(`Model Type` = wflow_id,
-         `RMSE` = mean)
+rf_basic_rmse <- show_best(tuned_rf_basic, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "Random Forest (Basic)")
 
-basic_model_results_tibble
+knn_basic_rmse <- show_best(tuned_knn_basic, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "K-Nearest Neighbors (Basic)")
 
-save(basic_model_results_tibble, file = here("results/basic_results.rda"))
+en_basic_rmse <- show_best(tuned_en_basic, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "Elastic Net (Basic)")
 
-# feature engineering model analysis ----
-fe_model_results <- as_workflow_set(
-  null = null_fit_fe, 
-  linear = lm_fit_fe,
-  elastic_net = tuned_en_fe,
-  k_nearest_neighbors = tuned_knn_fe,
-  boosted_tree = tuned_bt_fe,
-  random_forest = tuned_rf_fe
-)
+bt_rmse <- show_best(tuned_bt_fe, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "Boosted Tree")
 
-fe_model_results_tibble <- fe_model_results |>
-  collect_metrics() |>
-  filter(.metric == "rmse") |>
-  slice_min(mean, by = wflow_id) |>
-  arrange(mean) |>
-  select(`Model Type` = wflow_id,
-         `RMSE` = mean)
+null_rmse <- show_best(null_fit_fe, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "Null")
 
-fe_model_results_tibble
+lm_rmse <- show_best(lm_fit_fe, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "Linear")
 
-save(fe_model_results_tibble, file = "results/fe_results.rda")
+rf_rmse <- show_best(tuned_rf_fe, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "Random Forest")
 
-# best model ----
-show_best(tuned_rf_basic, metric = "rmse")
+knn_rmse <- show_best(tuned_knn_fe, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "K-Nearest Neighbors")
 
+en_rmse <- show_best(tuned_en_fe, metric = "rmse") |>
+  slice_head(n = 1) |>
+  mutate(Model = "Elastic Net")
 
+# rmse tibble
+rmse_tibble <- bind_rows(
+  null_basic_rmse, 
+  null_rmse,
+  lm_basic_rmse,
+  lm_rmse,
+  en_basic_rmse,
+  en_rmse,
+  rf_basic_rmse,
+  rf_rmse,
+  en_basic_rmse,
+  en_rmse,
+  knn_basic_rmse,
+  knn_rmse,
+  bt_basic_rmse,
+  bt_rmse
+) |>
+  arrange(mean)
 
-
+save(rmse_tibble, file = here("results/rmse_tibble.rda"))
