@@ -1,5 +1,5 @@
 ---
-title: "Predicting Social Media Shares of Mashable News Articles"
+title: "Final Report: Predicting Social Media Shares of Mashable News Articles"
 subtitle: |
   | STAT 301-2 Final Project
 author: "Stacy Caeiro"
@@ -31,7 +31,6 @@ library(knitr)
 #| label: load-files
 #| echo: false
 
-load(here("data_splits/articles_train.rda"))
 load(here("results/rmse_tibble.rda"))
 load(here("results/rf_final_metrics.rda"))
 load(here("results/rf_final_metrics_scaled.rda"))
@@ -214,8 +213,6 @@ According to @tbl-ten-pct-scaled, the model only predicted 11% of values within 
 ![Predicted vs Actual Values on Original Scale](img/pred_vs_shares_scaled.png){#fig-pred-scaled}
 
 According to @fig-pred-scaled, there is a strong, positive trend between predicted shares and actual shares on original scale. However, most values fall outside of this trend line. 
-
-
 ### Final Model vs Baseline Model
 When using RMSE as a comparison metric, the final random forest model (`RMSE` = 0.86) performed better than the baseline null model (`RMSE` = 0.928). However, considering the amount of effort that was put into tuning 6 model types, conducting preprocessing recipe steps, and waiting for the models to finish running, the small improvement in the RMSE isn't significant enough to have made that effort worthwhile. 
 

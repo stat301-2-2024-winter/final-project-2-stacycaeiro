@@ -1,0 +1,116 @@
+---
+title: "Executive Summary: Predicting Social Media Shares of Mashable News Articles"
+subtitle: |
+  | STAT 301-2 Final Project
+author: "Stacy Caeiro"
+date: today
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+    
+execute:
+  echo: false
+  warning: false
+
+from: markdown+emoji 
+reference-location: margin
+citation-location: margin
+---
+```{r}
+#| label: load-libraries
+#| echo: false 
+library(tidyverse)
+library(tidymodels)
+library(here)
+library(knitr)
+```
+
+```{r}
+#| label: load-files
+#| echo: false
+
+load(here("data_splits/articles_train.rda"))
+load(here("results/rmse_tibble.rda"))
+load(here("results/rf_final_metrics.rda"))
+load(here("results/rf_final_metrics_scaled.rda"))
+load(here("results/shares_five_num.rda"))
+```
+
+::: {.callout-tip icon="false"}
+## Github Repo Link
+
+[Final-Project-Github-Link](https://github.com/stat301-2-2024-winter/final-project-2-stacycaeiro.git)
+::: 
+
+## Introduction and Data Overview 
+My prediction problem is to predict the amount of social media shares that an online article with receive.
+
+I will be using the [Online News Popularity](https://archive.ics.uci.edu/dataset/332/online+news+popularity) from the [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/). This dataset contains features of Mashable news articles published over a 2 year period, such as length of title and day of the week published. 
+
+## Main Findings 
+
+### Initial Model Tuning
+
+To determine which model would be best for my data, I ran 6 model types - null, linear, elastic net, k-nearest neighbors, boosted tree, and random forest - on a kitchen sink recipe and a tailored preprocessed recipe. 
+
+From my initial modeling, I found that based on the metric of root mean squared error (RMSE), the best performing model was a random forest model with the kitchen sink recipe and hyperparameters `mtry` = 9 and `min_n` = 2. The RMSE for the best random forest model was `0.847`. This is slightly better than the RMSE for the baseline 
+null model, `0.928`.
+
+
+### Final Model Results - Log Scale
+```{r}
+#| label: tbl-rf-metrics
+#| tbl-cap: "Metrics for Final Random Forest Model"
+#| echo: false 
+rf_final_metrics |>
+  kable()
+```
+
+According to @tbl-rf-metrics, the final random forest model has an RMSE of 0.86, an R-squared (RSQ) value of 0.165, and a mean absolute error (MAE) value of 0.631. 
+
+The RMSE of 0.86 indicates that on average, the predicted values deviate from the actual values by 0.86. The somewhat low value of this RMSE means this model has low-moderate accuracy. 
+
+The RSQ of 0.165 indicates that 16.5% of the variance in shares is explained by the model. This low value means that the model poorly captures the relationship between the predictors and the outcome. 
+
+The MAE of 0.631 indicates that the absolute difference between the predicted and actual values is 0.631. The somewhat low value of the metric means this model has low-moderate accuracy. 
+
+![Predicted vs Actual Values on Log Scale](img/pred_vs_shares_log.png){#fig-pred-log}
+
+Similarly, as seen in @fig-pred-log, while there is a defined positive linear trend 
+between predicted and actual shares, there are a significant amount of values that 
+fall outside of the trendline.  
+
+### Final Model Results - Original Scale 
+```{r}
+#| label: tbl-rf-metrics-scaled
+#| tbl-cap: "Metrics for Final Model on Original Scale"
+#| echo: false 
+
+kable(rf_final_metrics_scaled)
+```
+
+According to @tbl-rf-metrics-scaled, the metrics for the final random forest model 
+on the original scale are an RMSE of 14,881; an RSQ of 0.016, and an MSQ of 2,527. 
+
+The RMSE of 14,881 indicates that on average, the predicted values deviate from the actual values by 14,881. Considering that the standard deviation for shares is 11,627; this RMSE values showcases low model success. Ideally, we would want the RMSE to be the same or lower than the standard deviation for the outcome variable. 
+
+The RSQ of 0.016 indicates that 1.6% of the variance in shares is explained by the model. This low value means that the model poorly captures the relationship between the predictors and the outcome. 
+
+The MAE of 2,537 indicates that the absolute difference between the predicted and actual values is 2,537. Considering there is a ~2,000 difference between the 75th quartile and 25th quartile of shares, this MAE indicates low model success. Ideally, we would want a lower MAE value. 
+
+![Predicted vs Actual Values on Original Scale](img/pred_vs_shares_scaled.png){#fig-pred-scaled}
+
+According to @fig-pred-scaled, there is a strong, positive trend between predicted shares and actual shares on original scale. However, most values fall outside of this trend line. 
+
+## Conclusion
+
+Overall, my final random forest model (RMSE = `0.86`) performed slightly better than my baseline null model (RMSE = `0.928`). Furthermore, while there was an improvement in RMSE between model types, there was not a significant improvement between the kitchen sink recipe and feature engineering recipe. Additionally, although my final model had a low-moderate success on a log scale, when transformed to original scale, it performed more poorly. 
+
+In the future, I would conduct a more extensive EDA and put in more research into preprocessing recipe steps to ensure that the recipe steps I include will lead to a more efficient model. Furthermore, I would decrease the values of certain parameters, such as number of variables set at each split, to reduce computational time. 
+
+## References 
+
+Fernandes, K., Vinagre, P., Cortez, P., & Sernadela, P. (2015). Online News Popularity. UC Irvine Machine Learning Repository. 
+[https://archive.ics.uci.edu/dataset/332/online+news+popularity](https://archive.ics.uci.edu/dataset/332/online+news+popularity)
