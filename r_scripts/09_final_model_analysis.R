@@ -45,7 +45,8 @@ save(rf_final_metrics, within_10_pct,
 
 ggplot(rf_predict, aes(x = shares_log, y = .pred)) +
   geom_point(alpha = 0.5) +
-  geom_abline() +
+  geom_abline(color = "lightslateblue", 
+              size = 1.3) +
   labs(title = "Predicted Shares vs Actual Shares on Log Scale",
        x = "Actual Shares",
        y = "Predicted Shares") 
@@ -80,7 +81,8 @@ save(rf_final_metrics_scaled, within_10_pct_scaled,
 
 ggplot(rf_predict_scaled, aes(x = shares, y = .pred_scaled)) +
   geom_point(alpha = 0.5) +
-  geom_abline() +
+  geom_abline(color = "lightslateblue",
+              size = 1.3) +
   labs(title = "Predicted Shares vs Actual Shares on Original Scale",
        x = "Actual Shares",
        y = "Predicted Shares") 

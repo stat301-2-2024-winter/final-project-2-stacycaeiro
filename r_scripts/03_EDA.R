@@ -44,7 +44,60 @@ ggplot(subset_articles, aes(x = log(num_hrefs))) +
 
 # yeo-johnson ----
 ggplot(subset_articles, aes(x = kw_avg_min)) +
-  geom_histogram() 
+  geom_histogram() +
+  xlim(0, 7500) + 
+  labs(title = "Frequency of Average Shares of Worst Keyword",
+       x = "Average Share of Worst Keyword",
+       y = "Count")
+
+ggsave(filename = "img/avg_worst_kw.png")
+
+ggplot(subset_articles, aes(x = kw_avg_avg)) +
+  geom_histogram() +
+  xlim(0, 20000) +
+  labs(title = "Frequency of Average Shares of Average Keyword",
+       x = "Average Share of Average Keyword",
+       y = "Count")
+
+ggsave(filename = "img/avg_avg_kw.png")
+
+ggplot(subset_articles, aes(x = n_tokens_content)) +
+  geom_histogram() +
+  xlim(0,5000) +
+  labs(title = "Frequency of Number of Words in Content",
+       x = "Number of Words in Content",
+       y = "Count")
+
+ggsave(filename = "img/num_words_content.png")
+
+ggplot(subset_articles, aes(x = num_hrefs)) +
+  geom_histogram() +
+  xlim(0, 150) + 
+  labs(title = "Frequency of Number of Links",
+       x = "Number of Links",
+       y = "Count")
+
+ggsave(filename = "img/num_links.png")
+
+ggplot(subset_articles, aes(x = self_reference_avg_sharess)) +
+  geom_histogram() +
+  xlim(0, 200000) + 
+  ylim(0, 7500) +
+  labs(title = "Frequency of Average Shares of Referenced Articles",
+       x = "Average Shares of Referenced Articles",
+       y = "Count")
+
+ggsave(filename = "img/avg_shares_ref.png")
+
+ggplot(subset_articles, aes(x = self_reference_min_shares)) +
+  geom_histogram() +
+  xlim(0, 250000) + 
+  ylim(0, 3000) +
+  labs(title = "Frequency of Minimum Shares of Referenced Articles",
+       x = "Minimum Shares of Referenced Articles",
+       y = "Count")
+
+ggsave(filename = "img/min_shares_ref.png")
 
 ggplot(subset_articles, aes(x = log(kw_avg_min))) +
   geom_histogram()
@@ -95,8 +148,23 @@ ggplot(subset_articles, aes(x = title_sentiment_polarity, y = shares)) +
 ggplot(subset_articles, aes(x = abs_title_subjectivity, y = shares)) +
   geom_point()
 
-ggplot(subset_articles, aes(x = title_subjectivity)) +
-  geom_histogram()
+ggplot(subset_articles, aes(x = title_sentiment_polarity)) +
+  geom_histogram() + 
+  geom_abline(color = "lightslateblue", size = 1.3) +
+  labs(title = "Frequency of Title Sentiment Polarity",
+       x = "Title Sentiment Polarity",
+       y = "Count")
+
+ggsave(filename = "img/title_sentiment_polarity.png")
+
+ggplot(subset_articles, aes(x = global_sentiment_polarity)) +
+  geom_histogram() + 
+  geom_abline(color = "lightslateblue", size = 1.3) +
+  labs(title = "Frequency of Global Sentiment Polarity",
+       x = "Global Sentiment Polarity",
+       y = "Count")
+
+ggsave(filename = "img/global_sentiment_polarity.png")
 
 # outcome: ns(title_subjectivity, title_sentiment_polarity,
 #global_subjectivity, global_sentiment_polarity)  
@@ -134,10 +202,21 @@ ggcorrplot::ggcorrplot(articles_corr_2)
 
 ggplot(subset_articles, aes(x = num_hrefs, y = n_tokens_content)) +
   geom_point() + 
-  geom_abline()
+  geom_abline(color = "lightslateblue", 
+              slope = 10) +
+  labs(title = "Relationship Between Number of Links & Number of Words in Content",
+       x = "Number of Links",
+       y = "Number of Words in Content")
+
+ggsave(filename = "img/links_vs_content.png")
 
 ggplot(subset_articles, aes(x = num_hrefs, y = num_imgs)) +
   geom_point() + 
-  geom_abline()
+  geom_abline(color = "lightslateblue") +
+  labs(title = "Relationship Between Number of Links and Number of Images",
+       x = "Number of Links",
+       y = "Number of Images")
+
+ggsave(filename = "img/links_vs_images.png")
 
   

@@ -8,6 +8,16 @@ glimpse(articles)
 
 skim(articles)
 
+shares_five_num <- summarize(articles, 
+          min = min(shares),
+          q1 = quantile(shares, 0.25),
+          median = median(shares),
+          q3 = quantile(shares, 0.75),
+          max = max(shares),
+          sd = sd(shares))
+         
+save(shares_five_num, file = here("results/shares_five_num.rda"))
+
 gg_miss_var(articles) # no missing variables
 
 # plot target variable ----

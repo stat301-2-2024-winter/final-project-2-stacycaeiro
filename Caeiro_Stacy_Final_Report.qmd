@@ -19,17 +19,23 @@ reference-location: margin
 citation-location: margin
 ---
 ```{r}
+#| label: load-libraries
 #| echo: false 
 library(tidyverse)
 library(tidymodels)
 library(here)
 library(knitr)
 ```
+
 ```{r}
+#| label: load-files
+#| echo: false
+
 load(here("data_splits/articles_train.rda"))
 load(here("results/rmse_tibble.rda"))
 load(here("results/rf_final_metrics.rda"))
 load(here("results/rf_final_metrics_scaled.rda"))
+load(here("results/shares_five_num.rda"))
 ```
 
 ::: {.callout-tip icon="false"}
@@ -46,7 +52,17 @@ I will be using the [Online News Popularity](https://archive.ics.uci.edu/dataset
 
 ### Target Variable Analysis
 ![Frequency of Social Media Shares](img/shares_hist.png){#fig-shares-hist}
-According to @fig-shares-hist, the frequency of shares is right-skewed. Most articles receive less than 10,000 shares and very few articles receive more than 20,000 shares. 
+According to @fig-shares-hist, the frequency of shares is right-skewed. Due to this right-skew, I conducted a log transformation of shares and used the 
+logged shares variable as my outcome variable. 
+
+```{r}
+#| label: tbl-shares-sum
+#| tbl-cap: "Summary Statistics for Shares"
+#| echo: false 
+
+kable(shares_five_num)
+```
+Furthermore, as seen in @tbl-shares-sum, the minimum value of shares is 1, the 25th quantile is 946, the median is 1400, the 75th quantile is 2800, the maximum value is 843,300, and the standard deviation is 11,627. While there are major outliers on both sides of the dataset, the middle 50% of articles receive 946-2800 shares. However, the standard deviation is large due to the high end outliers. 
 
 ### Exploratory Data Analysis
 For starters, the entire dataset contains no missing values. 
@@ -89,6 +105,8 @@ I added the following pre-processing steps to my feature engineering recipes:
 3. A correlation transformation to all predictors to remove highly correlated predictor variables in order to reduce redundancy in the model
 4. Two interactions to capture relationships between predictor variables that when compounded could potentially improve model efficiency. 
 
+The EDA behind these preprocessing steps is showcased in Appendix I.
+
 ### Metric 
 I am using Root Mean Square Error (RMSE) as my final metric because it provides an easily understandable measure of the average prediction error of the model. 
 
@@ -130,6 +148,8 @@ recipe because I added preprocessing steps to the feature engineering based on m
 to attempt to make the model more efficient. 
 
 ## Final Model Analysis 
+
+### Metrics on Log-Scale 
 ```{r}
 #| label: tbl-rf-metrics
 #| tbl-cap: "Metrics for Final Random Forest Model"
@@ -138,6 +158,7 @@ rf_final_metrics |>
   kable()
 ```
 According to @tbl-rf-metrics, the final random forest model has an RMSE of 0.86, an R-squared (RSQ) value of 0.165, and a mean absolute error (MAE) value of 0.631. 
+
 The RMSE of 0.86 indicates that on average, the predicted values deviate from the actual values by 0.86. The somewhat low value of this RMSE means this model has low-moderate accuracy. 
 
 The RSQ of 0.165 indicates that 16.5% of the variance in shares is explained by the model. This low value means that the model poorly captures the relationship between the predictors and the outcome. 
@@ -151,13 +172,17 @@ The MAE of 0.631 indicates that the absolute difference between the predicted an
 
 within_10_pct |>
   kable()
-  
 ```
-According to @tbl-ten-pct, 
+Additionally, according to @tbl-ten-pct, 68.2% of the predicted values were within 
+10% of the actual value. This further supports that the model had low-moderate success. 
 
 ![Predicted vs Actual Values on Log Scale](img/pred_vs_shares_log.png){#fig-pred-log}
 
-According to @fig-pred-log, 
+Similarly, as seen in @fig-pred-log, while there is a defined positive linear trend 
+between predicted and actual shares, there are a significant amount of values that 
+fall outside of the trendline. 
+
+### Metrics on Original Scale 
 
 ```{r}
 #| label: tbl-rf-metrics-scaled
@@ -167,7 +192,15 @@ According to @fig-pred-log,
 kable(rf_final_metrics_scaled)
 ```
 
-According to @tbl-rf-metrics-scaled, 
+According to @tbl-rf-metrics-scaled, the metrics for the final random forest model 
+on the original scale are an RMSE of 14,881; an RSQ of 0.016, and an MSQ of 2,527. 
+
+The RMSE of 14,881 indicates that on average, the predicted values deviate from the actual values by 14,881. Considering that the standard deviation for shares is 11,627; this RMSE values showcases low model success. Ideally, we would want the RMSE to be the same or lower than the standard deviation for the outcome variable. 
+
+The RSQ of 0.016 indicates that 1.6% of the variance in shares is explained by the model. This low value means that the model poorly captures the relationship between the predictors and the outcome. 
+
+The MAE of 2,537 indicates that the absolute difference between the predicted and actual values is 2,537. Considering there is a ~2,000 difference between the 75th quartile and 25th quartile of shares, this MAE indicates low model success. Ideally, we would want a lower MAE value. 
+
 
 ```{r}
 #| label: tbl-ten-pct-scaled
@@ -176,16 +209,72 @@ According to @tbl-rf-metrics-scaled,
 kable(within_10_pct_scaled)
 ```
 
-According to @tbl-ten-pct-scaled, 
+According to @tbl-ten-pct-scaled, the model only predicted 11% of values within 10% of the actual values when transformed to original scale. This indicates very low model success. 
 
 ![Predicted vs Actual Values on Original Scale](img/pred_vs_shares_scaled.png){#fig-pred-scaled}
 
-According to @fig-pred-scaled, 
-[how much better is the final model over the baseline?]
-[are there features of the model that make it the best?]
+According to @fig-pred-scaled, there is a strong, positive trend between predicted shares and actual shares on original scale. However, most values fall outside of this trend line. 
+
+
+### Final Model vs Baseline Model
+When using RMSE as a comparison metric, the final random forest model (`RMSE` = 0.86) performed better than the baseline null model (`RMSE` = 0.928). However, considering the amount of effort that was put into tuning 6 model types, conducting preprocessing recipe steps, and waiting for the models to finish running, the small improvement in the RMSE isn't significant enough to have made that effort worthwhile. 
 
 ## Conclusion 
+Overall, my final random forest model performed slightly better than my baseline null model. Furthermore, while there was an improvement in RMSE between model types, there was not a significant improvement between the kitchen sink recipe and feature engineering recipe. Additionally, although my final model had a low-moderate metrics, when transformed to original scale, it performed poorly, as it only predictied 11% of observations within 10% of the actual value. 
+
+In the future, I would conduct a more extensive EDA and put in more research into preprocessing recipe steps to ensure that the recipe steps I include will lead to a more efficient model. Furthermore, I would decrease the values of certain parameters, such as number of variables set at each split, to reduce computational time. 
 
 ## References 
+Fernandes, K., Vinagre, P., Cortez, P., & Sernadela, P. (2015). Online News Popularity. UC Irvine Machine Learning Repository. 
+[https://archive.ics.uci.edu/dataset/332/online+news+popularity](https://archive.ics.uci.edu/dataset/332/online+news+popularity)
 
 ## Appendix: EDA 
+### Interactions 
+
+![Links vs Words in Content](img/links_vs_content.png){#fig-links-content}
+As seen in @fig-links-content, there is a mild, positive trend between number of links and number of words in content in the article. 
+
+![Links vs Images](img/links_vs_images.png){#fig-links-images}
+Likewise, @fig-links-images showcases a positive relationship between number of links in an article and number of images in an article. 
+
+Due to the high correlation between these two variable pairs, I added an interaction step for number of links & number of words in content, as well as number of links & number of images in my feature engineering recipe. 
+
+### Natural Splines 
+![Frequency of Title Sentiment Polarity](img/title_sentiment_polarity.png){#fig-title-pol}
+As displayed in @fig-title-pol, title sentiment polarity contains non-linear relationships due the nature of polarity being strongest when closest to -1 or 1, instead of being stronger simply as values increase. 
+
+![Frequency of Global Sentiment Polarity](img/global_sentiment_polarity.png){#fig-global-pol}
+
+A similar non linear trend is seen in @fig-global-pol with global sentiment polarity as well. 
+
+Due to these non-linear relationships, I added natural splines to these two variables in my feature engineering recipe. 
+
+### Yeo-Johnson 
+![Average Shares of Average Keyword](img/avg_avg_kw.png){#fig-avg-avg-kw}
+As seen in @fig-avg-avg-kw, the average shares of average keywords is right-skewed. 
+
+![Average Shares of Worst Keyword](img/avg_worst_kw.png){#fig-avg-worst-kw}
+
+As seen in @fig-avg-worst-kw, the average shares of worst keywords is right-skewed. 
+
+![Average Shares of Referenced Articles](img/avg_shares_ref.png){#fig-avg-shares-ref}
+
+As seen in @fig-avg-shares-ref, the average shares of referenced articles is right-skewed. 
+
+![Minimum Shares of Referenced Articles](img/min_shares_ref.png){#fig-min-shares-ref}
+
+As seen in @fig-min-shares-ref, the minimum shares of referenced articles is right-skewed. 
+
+![Number of Links](img/num_links.png){#fig-num-links}
+
+As seen in @fig-num-links, the frequency of number of links in an article is right-skewed. 
+
+![Number of Words in Content](img/num_words_content.png){#fig-num-words-content}
+
+As seen in @fig-num-words-content, the frequency of number of words in content is right-skewed. 
+
+Since these six variables contain a right-skew, I applied a Yeo-Johnson transformation on them in my feature engineering recipe. I used a Yeo-Johnson
+transformation instead of a log transformation because the log transformation resulted in the creation of missing values. 
+
+
+
